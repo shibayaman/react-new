@@ -6,8 +6,8 @@
     "react-new": "./index.js"
   },
   "scripts": {
-    "lint": "eslint --ignore-path .gitignore .",
-    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|json)\""
+    "lint": "eslint .",
+    "format": "prettier --ignore-path .eslintignore --write \"**/*.+(js|json)\""
   },
   "keywords": [],
   "author": "",
@@ -15,6 +15,7 @@
   "dependencies": {
     "chalk": "^4.0.0",
     "commander": "^5.0.0",
+    "cross-spawn": "^7.0.2",
     "validate-npm-package-name": "^3.0.0"
   },
   "devDependencies": {

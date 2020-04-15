@@ -1,0 +1,29 @@
+{
+  "devDependencies": [
+    "@babel/core",
+    "@babel/preset-env",
+    "@babel/preset-react",
+    "@babel/preset-typescript",
+    "@types/react",
+    "@types/react-dom",
+    "@typescript-eslint/eslint-plugin",
+    "@typescript-eslint/parser",
+    "babel-loader",
+    "eslint",
+    "eslint-config-prettier",
+    "eslint-plugin-react",
+    "prettier",
+    "typescript",
+    "webpack",
+    "webpack-cli",
+    "webpack-dev-server"
+  ],
+  "dependencies": ["react", "react-dom"],
+  "scripts": {
+    "build": "webpack --env.NODE_ENV=production && cp ./public/index.html ./build",
+    "dev": "webpack-dev-server --env.NODE_ENV=development",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
+    "format": "prettier --ignore-path .eslintignore --write \"**/*.+(js|jsx|json|ts|tsx)\"",
+    "check:type": "tsc"
+  }
+}
