@@ -6,8 +6,9 @@ const path = require('path');
 const spawn = require('cross-spawn');
 const validateNPMPackageName = require('validate-npm-package-name');
 
-const { version: reactNewVersion } = require('../package.json');
+const propmtAppPreference = require('./prompt');
 const templateJson = require('./template.json');
+const { version: reactNewVersion } = require('../package.json');
 
 module.exports = async () => {
   let projectName;
@@ -26,7 +27,13 @@ module.exports = async () => {
 
   const projectPath = path.resolve(projectName);
 
-  console.log(`creating project ${chalk.cyan(projectName)}`);
+  console.clear();
+  console.log(`creating project ${chalk.cyan(projectName)}\n`);
+
+  const appPreference = await propmtAppPreference().catch(() => {
+    console.log('an error occurred while creating the app');
+    process.exit(1);
+  });
 
   try {
     fs.mkdirSync(projectPath);
