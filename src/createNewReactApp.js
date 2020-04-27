@@ -6,6 +6,7 @@ const path = require('path');
 const spawn = require('cross-spawn');
 const validateNPMPackageName = require('validate-npm-package-name');
 
+const loadPlugins = require('./loadPlugins');
 const propmtAppPreference = require('./prompt');
 const templateJson = require('./template.json');
 const { version: reactNewVersion } = require('../package.json');
@@ -35,6 +36,8 @@ module.exports = async () => {
     process.exit(1);
   });
 
+  const { configs, devDependencies, scripts } = loadPlugins(appPreference);
+
   try {
     fs.mkdirSync(projectPath);
   } catch (err) {
@@ -57,7 +60,8 @@ module.exports = async () => {
     version: '0.1.0',
   };
 
-  const packageJsonPath = createPackageJson(projectPath, packageJson);
+  const packageJsonPath = path.join(projectPath, 'package.json');
+  writeJsonFile(packageJsonPath, packageJson);
 
   process.chdir(projectPath);
 
@@ -76,7 +80,7 @@ module.exports = async () => {
     return installLatestPackages(...args);
   }, Promise.resolve());
 
-  appendPackageJson(packageJsonPath, { scripts: templateJson.scripts });
+  appendJsonFile(packageJsonPath, { scripts: templateJson.scripts });
 
   const reactNewPath = path.dirname(
     require.resolve(`react-new`, { paths: [projectPath] })
@@ -120,16 +124,14 @@ const isValidProjectName = name => {
   return true;
 };
 
-const createPackageJson = (root, json) => {
-  const packageJsonPath = path.join(root, 'package.json');
-  fs.writeFileSync(packageJsonPath, JSON.stringify(json, null, 2) + os.EOL);
-  return packageJsonPath;
+const writeJsonFile = (path, contents) => {
+  fs.writeFileSync(path, JSON.stringify(contents, null, 2) + os.EOL);
 };
 
-const appendPackageJson = (packageJsonPath, appendObj) => {
-  const originalJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-  const newJson = Object.assign({}, originalJson, appendObj);
-  fs.writeFileSync(packageJsonPath, JSON.stringify(newJson, null, 2) + os.EOL);
+const appendJsonFile = (path, contents) => {
+  const json = JSON.parse(fs.readFileSync(path, 'utf8'));
+  Object.assign(json, contents);
+  writeJsonFile(path, json);
 };
 
 const installLatestPackages = (packages, { devInstall = false } = {}) => {

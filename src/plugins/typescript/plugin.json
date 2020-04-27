@@ -1,0 +1,22 @@
+{
+  "devDependencies": [
+    "@babel/preset-typescript",
+    "@types/react",
+    "@types/react-dom",
+    "@typescript-eslint/eslint-plugin",
+    "@typescript-eslint/parser",
+    "typescript"
+  ],
+  "scripts": {
+    "check:type": "tsc"
+  },
+  "config": {
+    "compilerOptions": {
+      "baseUrl": "./src",
+      "jsx": "react",
+      "noEmit": true,
+      "strict": true,
+      "esModuleInterop": true
+    }
+  }
+}

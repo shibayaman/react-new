@@ -1,1 +1,0 @@
-// const config = 'tsconfig.json';
