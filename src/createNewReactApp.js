@@ -36,7 +36,7 @@ module.exports = async () => {
     process.exit(1);
   });
 
-  const { configs, devDependencies, scripts } = loadPlugins(appPreference);
+  const plugins = loadPlugins(appPreference);
 
   try {
     fs.mkdirSync(projectPath);
@@ -65,12 +65,17 @@ module.exports = async () => {
 
   process.chdir(projectPath);
 
-  console.log('installing dependencies, this might take a few minutes.\n');
+  console.log('\ninstalling dependencies, this might take a few minutes.\n');
+
+  const devDependencies = [
+    ...templateJson.devDependencies,
+    ...plugins.devDependencies,
+  ];
 
   //install dependencies and devDependencies in series (avoiding parallel install)
   await [
     [templateJson.dependencies],
-    [templateJson.devDependencies, { devInstall: true }],
+    [devDependencies, { devInstall: true }],
   ].reduce(async (prev, args) => {
     await prev.catch(() => {
       console.error(chalk.red(`an error occurred when installing packages`));
@@ -80,7 +85,8 @@ module.exports = async () => {
     return installLatestPackages(...args);
   }, Promise.resolve());
 
-  appendJsonFile(packageJsonPath, { scripts: templateJson.scripts });
+  const scripts = Object.assign(templateJson.scripts, plugins.scripts);
+  appendJsonFile(packageJsonPath, { scripts });
 
   const reactNewPath = path.dirname(
     require.resolve(`react-new`, { paths: [projectPath] })
@@ -89,6 +95,37 @@ module.exports = async () => {
   const templatePath = path.join(reactNewPath, 'src', 'template');
 
   fs.copySync(templatePath, projectPath);
+
+  Object.keys(plugins.configs).forEach(key => {
+    const config = plugins.configs[key];
+    writeJsonFile(path.join(projectPath, config.filename), config.content);
+  });
+
+  if (plugins.configsToTransform.babelConfig) {
+    fs.writeFileSync(
+      path.join(projectPath, 'babel.config.js'),
+      `module.exports = ${JSON.stringify(
+        plugins.configsToTransform.babelConfig,
+        null,
+        2
+      )}` + os.EOL
+    );
+  }
+
+  if (plugins.configsToTransform.webpackConfig) {
+    fs.writeFileSync(
+      path.join(projectPath, 'webpack.config.js'),
+      plugins.configsToTransform.webpackConfig
+    );
+  }
+
+  if (appPreference.typescript) {
+    fs.renameSync(
+      path.join(projectPath, 'src', 'App.js'),
+      path.join(projectPath, 'src', 'App.tsx')
+    );
+  }
+
   fs.renameSync(
     path.join(projectPath, 'gitignore'),
     path.join(projectPath, '.gitignore')
@@ -124,13 +161,13 @@ const isValidProjectName = name => {
   return true;
 };
 
-const writeJsonFile = (path, contents) => {
-  fs.writeFileSync(path, JSON.stringify(contents, null, 2) + os.EOL);
+const writeJsonFile = (path, content) => {
+  fs.writeFileSync(path, JSON.stringify(content, null, 2) + os.EOL);
 };
 
-const appendJsonFile = (path, contents) => {
+const appendJsonFile = (path, content) => {
   const json = JSON.parse(fs.readFileSync(path, 'utf8'));
-  Object.assign(json, contents);
+  Object.assign(json, content);
   writeJsonFile(path, json);
 };
 

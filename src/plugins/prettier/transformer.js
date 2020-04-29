@@ -1,5 +1,5 @@
 module.exports = ({ configs }) => {
   if (configs.eslintrc) {
-    configs.eslintrc.extends.push('prettier', 'prettier/react');
+    configs.eslintrc.content.extends.push('prettier', 'prettier/react');
   }
 };

@@ -7,12 +7,8 @@ const babelConfig = require('./template/babel.config');
 
 module.exports = preference => {
   const plugins = loadAllPlugins(preference);
-  const { configs, devDependencies, scripts } = transform(plugins);
-  return {
-    configs,
-    devDependencies,
-    scripts,
-  };
+  const transformedPlugins = transform(plugins);
+  return transformedPlugins;
 };
 
 const loadAllPlugins = ({ eslint, prettier, typescript }) => {
@@ -56,38 +52,41 @@ const loadAllPlugins = ({ eslint, prettier, typescript }) => {
 };
 
 const transform = ({ configs, devDependencies, scripts }) => {
+  const configsToTransform = {};
   if (configs.prettierrc) {
     require('./plugins/prettier/transformer').call(null, { configs });
   }
 
   if (configs.tsconfig) {
-    ensureBabelConfigLoaded(configs);
-    ensureWebPackConfigLoaded(configs);
+    ensureBabelConfigLoaded(configsToTransform);
+    ensureWebPackConfigLoaded(configsToTransform);
     require('./plugins/typescript/transformer').call(null, {
       configs,
+      configsToTransform,
       scripts,
     });
   }
 
   return {
     configs,
+    configsToTransform,
     devDependencies,
     scripts,
   };
 };
 
-const ensureBabelConfigLoaded = configs => {
-  if (!configs.babelConfig) {
-    configs['babelConfig'] = babelConfig;
+const ensureBabelConfigLoaded = configsToTransform => {
+  if (!configsToTransform.babelConfig) {
+    configsToTransform['babelConfig'] = babelConfig;
   }
 };
 
-const ensureWebPackConfigLoaded = configs => {
-  if (!configs.webpackConfig) {
+const ensureWebPackConfigLoaded = configsToTransform => {
+  if (!configsToTransform.webpackConfig) {
     const webpackConfig = fs.readFileSync(
       path.join(__dirname, 'template/webpack.config.js'),
       'utf8'
     );
-    configs['webpackConfig'] = webpackConfig;
+    configsToTransform['webpackConfig'] = webpackConfig;
   }
 };

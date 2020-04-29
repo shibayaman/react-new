@@ -1,24 +1,27 @@
 {
-  "devDependencies": ["prettier", "eslint-config-prettie"],
+  "devDependencies": ["prettier", "eslint-config-prettier"],
   "scripts": {
     "format": "prettier --write \"**/*.+(js|jsx|json)\""
   },
   "config": {
-    "arrowParens": "avoid",
-    "bracketSpacing": true,
-    "htmlWhitespaceSensitivity": "css",
-    "insertPragma": false,
-    "jsxBracketSameLine": false,
-    "jsxSingleQuote": false,
-    "printWidth": 80,
-    "proseWrap": "preserve",
-    "quoteProps": "as-needed",
-    "requirePragma": false,
-    "semi": true,
-    "singleQuote": true,
-    "tabWidth": 2,
-    "trailingComma": "es5",
-    "useTabs": false,
-    "vueIndentScriptAndStyle": false
+    "filename": ".prettierrc",
+    "content": {
+      "arrowParens": "avoid",
+      "bracketSpacing": true,
+      "htmlWhitespaceSensitivity": "css",
+      "insertPragma": false,
+      "jsxBracketSameLine": false,
+      "jsxSingleQuote": false,
+      "printWidth": 80,
+      "proseWrap": "preserve",
+      "quoteProps": "as-needed",
+      "requirePragma": false,
+      "semi": true,
+      "singleQuote": true,
+      "tabWidth": 2,
+      "trailingComma": "es5",
+      "useTabs": false,
+      "vueIndentScriptAndStyle": false
+    }
   }
 }

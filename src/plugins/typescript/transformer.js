@@ -2,12 +2,13 @@ const esprima = require('esprima');
 const estraverse = require('estraverse');
 const escodegen = require('escodegen');
 
-module.exports = ({ configs, scripts }) => {
-  const { eslintrc, prettierrc, babelConfig, webpackConfig } = configs;
+module.exports = ({ configs, configsToTransform, scripts }) => {
+  const { eslintrc, prettierrc } = configs;
+  const { babelConfig, webpackConfig } = configsToTransform;
   if (eslintrc) {
     scripts.lint = 'eslint --ext .js,.jsx,.ts,.tsx .';
-    eslintrc.plugins.push('@typescript-eslint');
-    Object.assign(eslintrc, {
+    eslintrc.content.plugins.push('@typescript-eslint');
+    Object.assign(eslintrc.content, {
       parser: '@typescript-eslint/parser',
       overrides: [
         {
@@ -20,14 +21,21 @@ module.exports = ({ configs, scripts }) => {
         },
       ],
     });
+
+    Object.assign(scripts, {
+      lint: 'eslint --ext .js,.jsx,.ts,.tsx .',
+    });
   }
 
   if (prettierrc) {
     scripts.format = 'prettier --write "**/*.+(js|jsx|json|ts|tsx)"';
+    Object.assign(scripts, {
+      format: 'prettier --write "**/*.+(js|jsx|json|ts|tsx)"',
+    });
   }
 
   babelConfig.presets.push('@babel/preset-typescript');
-  configs.webpackConfig = transformWebpackConfig(webpackConfig);
+  configsToTransform.webpackConfig = transformWebpackConfig(webpackConfig);
 };
 
 const transformWebpackConfig = webpackConfig => {

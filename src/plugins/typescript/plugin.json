@@ -11,12 +11,15 @@
     "check:type": "tsc"
   },
   "config": {
-    "compilerOptions": {
-      "baseUrl": "./src",
-      "jsx": "react",
-      "noEmit": true,
-      "strict": true,
-      "esModuleInterop": true
+    "filename": "tsconfig.json",
+    "content": {
+      "compilerOptions": {
+        "baseUrl": "./src",
+        "jsx": "react",
+        "noEmit": true,
+        "strict": true,
+        "esModuleInterop": true
+      }
     }
   }
 }
