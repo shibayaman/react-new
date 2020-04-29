@@ -1,5 +1,6 @@
 const chalk = require('chalk');
 const { Command } = require('commander');
+const { execSync } = require('child_process');
 const fs = require('fs-extra');
 const os = require('os');
 const path = require('path');
@@ -131,9 +132,18 @@ module.exports = async () => {
     path.join(projectPath, '.gitignore')
   );
 
+  const isGitInitialized = initializeGit();
+  if (isGitInitialized) {
+    const isGitCommited = gitCommit();
+    if (!isGitCommited) {
+      fs.removeSync(path.join(projectPath, '.git'));
+      console.log('removed .git');
+    }
+  }
+
   console.log(`\nproject abc was successfully created!\n`);
   console.log(
-    `now run can \n\n  ${chalk.cyan(
+    `now run can cd in the directory and run \n\n  ${chalk.cyan(
       'npm run dev'
     )}\n\nto start the development server\n`
   );
@@ -184,4 +194,29 @@ const installLatestPackages = (packages, { devInstall = false } = {}) => {
       resolve();
     });
   });
+};
+
+const initializeGit = () => {
+  try {
+    execSync('git --version', { stdio: 'ignore' });
+    execSync('git init', { stdio: 'inherit' });
+    return true;
+  } catch (e) {
+    console.log(`${chalk.yellow(`\ngit was not initialized\n ${e}`)}\n`);
+    return false;
+  }
+};
+
+const gitCommit = () => {
+  try {
+    execSync('git add -A', { stdio: 'ignore' });
+    execSync('git commit -m "Initial Commit"', {
+      stdio: 'ignore',
+    });
+    console.log('created initial git commit');
+    return true;
+  } catch (e) {
+    console.log(`${chalk.yellow(`\nunable to create git commit\n ${e}`)}\n`);
+    return false;
+  }
 };
