@@ -89,11 +89,7 @@ module.exports = async () => {
   const scripts = Object.assign(templateJson.scripts, plugins.scripts);
   appendJsonFile(packageJsonPath, { scripts });
 
-  const reactNewPath = path.dirname(
-    require.resolve(`react-new`, { paths: [projectPath] })
-  );
-
-  const templatePath = path.join(reactNewPath, 'src', 'template');
+  const templatePath = path.join(__dirname, 'template');
 
   fs.copySync(templatePath, projectPath);
 
