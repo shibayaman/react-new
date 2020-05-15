@@ -65,8 +65,8 @@ const transformWebpackConfig = webpackConfig => {
             if (p.key.name === 'resolve') {
               p.value.properties.forEach(p => {
                 if (p.key.name === 'extensions') {
-                  const ts = esprima.parseScript("'ts'").body[0].expression;
-                  const tsx = esprima.parseScript("'tsx'").body[0].expression;
+                  const ts = esprima.parseScript("'.ts'").body[0].expression;
+                  const tsx = esprima.parseScript("'.tsx'").body[0].expression;
                   p.value.elements.push(ts);
                   p.value.elements.push(tsx);
                 }
