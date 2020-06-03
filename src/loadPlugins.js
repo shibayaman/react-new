@@ -15,27 +15,25 @@ const loadAllPlugins = ({ eslint, prettier, typescript }) => {
   const scripts = {};
   const devDependencies = [];
 
-  let eslintrc;
-  let prettierrc;
-  let tsconfig;
+  const configs = {};
 
   if (eslint) {
     const eslintPlugin = require('./plugins/eslint/plugin');
-    eslintrc = eslintPlugin.config;
+    configs.eslintrc = eslintPlugin.config;
     Object.assign(scripts, eslintPlugin.scripts);
     devDependencies.push(...eslintPlugin.devDependencies);
   }
 
   if (prettier) {
     const prettierPlugin = require('./plugins/prettier/plugin');
-    prettierrc = prettierPlugin.config;
+    configs.prettierrc = prettierPlugin.config;
     Object.assign(scripts, prettierPlugin.scripts);
     devDependencies.push(...prettierPlugin.devDependencies);
   }
 
   if (typescript) {
     const typescriptPlugin = require('./plugins/typescript/plugin');
-    tsconfig = typescriptPlugin.config;
+    configs.tsconfig = typescriptPlugin.config;
     Object.assign(scripts, typescriptPlugin.scripts);
     devDependencies.push(...typescriptPlugin.devDependencies);
   }
@@ -43,11 +41,7 @@ const loadAllPlugins = ({ eslint, prettier, typescript }) => {
   return {
     scripts,
     devDependencies,
-    configs: {
-      eslintrc,
-      prettierrc,
-      tsconfig,
-    },
+    configs,
   };
 };
 
@@ -90,3 +84,6 @@ const ensureWebPackConfigLoaded = configsToTransform => {
     configsToTransform['webpackConfig'] = webpackConfig;
   }
 };
+
+//exports for test
+module.exports.loadAllPlugins = loadAllPlugins;

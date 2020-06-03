@@ -95,9 +95,7 @@ module.exports = async () => {
 
   Object.keys(plugins.configs).forEach(key => {
     const config = plugins.configs[key];
-    if (config) {
-      writeJsonFile(path.join(projectPath, config.filename), config.content);
-    }
+    writeJsonFile(path.join(projectPath, config.filename), config.content);
   });
 
   if (plugins.configsToTransform.babelConfig) {

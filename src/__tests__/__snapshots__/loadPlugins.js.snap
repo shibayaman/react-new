@@ -1,0 +1,172 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`loadPlugins integration test babel config should modify babel config properly when ts loaded 1`] = `
+Object {
+  "env": Object {
+    "test": Object {
+      "plugins": Array [
+        "transform-es2015-modules-commonjs",
+      ],
+    },
+  },
+  "presets": Array [
+    Array [
+      "@babel/preset-env",
+      Object {
+        "modules": false,
+      },
+    ],
+    "@babel/preset-react",
+    "@babel/preset-typescript",
+    "@babel/preset-typescript",
+  ],
+}
+`;
+
+exports[`loadPlugins integration test eslint should modify eslintrc properly when prettier & ts loaded 1`] = `
+Object {
+  "content": Object {
+    "env": Object {
+      "browser": true,
+      "es6": true,
+      "node": true,
+    },
+    "extends": Array [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "prettier",
+      "prettier/react",
+      "prettier",
+      "prettier/react",
+    ],
+    "overrides": Array [
+      Object {
+        "extends": Array [
+          "plugin:@typescript-eslint/eslint-recommended",
+          "plugin:@typescript-eslint/recommended",
+          "prettier/@typescript-eslint",
+        ],
+        "files": Array [
+          "*.+(ts|tsx)",
+        ],
+      },
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": Object {
+      "ecmaFeatures": Object {
+        "jsx": true,
+      },
+      "ecmaVersion": 2018,
+      "sourceType": "module",
+    },
+    "plugins": Array [
+      "react",
+      "@typescript-eslint",
+    ],
+    "settings": Object {
+      "react": Object {
+        "version": "detect",
+      },
+    },
+  },
+  "filename": ".eslintrc",
+}
+`;
+
+exports[`loadPlugins integration test eslint should modify eslintrc properly when prettier loaded 1`] = `
+Object {
+  "content": Object {
+    "env": Object {
+      "browser": true,
+      "es6": true,
+      "node": true,
+    },
+    "extends": Array [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "prettier",
+      "prettier/react",
+    ],
+    "parserOptions": Object {
+      "ecmaFeatures": Object {
+        "jsx": true,
+      },
+      "ecmaVersion": 2018,
+      "sourceType": "module",
+    },
+    "plugins": Array [
+      "react",
+    ],
+    "settings": Object {
+      "react": Object {
+        "version": "detect",
+      },
+    },
+  },
+  "filename": ".eslintrc",
+}
+`;
+
+exports[`loadPlugins integration test eslint should return unedited eslintrc when no other plugins loaded 1`] = `
+Object {
+  "content": Object {
+    "env": Object {
+      "browser": true,
+      "es6": true,
+      "node": true,
+    },
+    "extends": Array [
+      "eslint:recommended",
+      "plugin:react/recommended",
+    ],
+    "parserOptions": Object {
+      "ecmaFeatures": Object {
+        "jsx": true,
+      },
+      "ecmaVersion": 2018,
+      "sourceType": "module",
+    },
+    "plugins": Array [
+      "react",
+    ],
+    "settings": Object {
+      "react": Object {
+        "version": "detect",
+      },
+    },
+  },
+  "filename": ".eslintrc",
+}
+`;
+
+exports[`loadPlugins integration test webpack config should modify webpack config properly when ts loaded 1`] = `
+"const path = require('path');
+module.exports = env => ({
+  mode: env.NODE_ENV || 'production',
+  entry: './src/App.tsx',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'build')
+  },
+  resolve: {
+    extensions: [
+      '.js',
+      '.jsx',
+      '.ts',
+      '.tsx'
+    ]
+  },
+  module: {
+    rules: [{
+        test: /.(js|jsx|ts|tsx)$/,
+        use: 'babel-loader',
+        exclude: /node_modules/
+      }]
+  },
+  devServer: {
+    contentBase: path.resolve(__dirname, 'public'),
+    compress: true,
+    port: 8000
+  }
+});"
+`;
