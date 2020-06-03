@@ -49,3 +49,7 @@ const resolveLinterOptions = answer => {
 };
 
 module.exports = promptAppPreference;
+
+//exports for test
+module.exports.resolveLinterOptions = resolveLinterOptions;
+module.exports.linterOptions = linterOptions;
