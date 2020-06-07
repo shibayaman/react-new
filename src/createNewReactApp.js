@@ -56,6 +56,20 @@ module.exports = async () => {
     process.exit(1);
   }
 
+  initialize({ projectName, projectPath, plugins, appPreference }).catch(
+    err => {
+      console.error(chalk.red(err));
+      cleanAndExit(1, projectPath);
+    }
+  );
+};
+
+const initialize = async ({
+  projectName,
+  projectPath,
+  plugins,
+  appPreference,
+}) => {
   const packageJson = {
     name: projectName,
     version: '0.1.0',
@@ -79,8 +93,7 @@ module.exports = async () => {
     [devDependencies, { devInstall: true }],
   ].reduce(async (prev, args) => {
     await prev.catch(() => {
-      console.error(chalk.red(`an error occurred when installing packages`));
-      process.exit(1);
+      throw new Error('an error occurred when installing packages');
     });
 
     return installLatestPackages(...args);
@@ -215,4 +228,9 @@ const gitCommit = () => {
     console.log(`${chalk.yellow(`\nunable to create git commit\n ${e}`)}\n`);
     return false;
   }
+};
+
+const cleanAndExit = (status, projectPath) => {
+  fs.removeSync(projectPath);
+  process.exit(1);
 };
