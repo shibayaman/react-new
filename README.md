@@ -2,6 +2,8 @@
 
 lets you interactively create react app
 
+![demo](https://github.com/shibayaman/react-new/blob/master/gif/demo.gif)
+
 ## Usage
 
 this app is intended to be used with `npx` without installing.
@@ -11,6 +13,3 @@ this app is intended to be used with `npx` without installing.
 ```
 
 command above will create a new react project named `my-app` in the current directory.
-
-Caution:
-this app is not ready for production. / 個人的に使うように作ったアプリなのであまり信用しないでください。
