@@ -2,7 +2,7 @@
 
 lets you interactively create react app
 
-![demo](https://github.com/shibayaman/react-new/blob/master/gif/demo.gif)
+<img src="gif/demo.gif" width="560">
 
 ## Usage
 
