@@ -8,6 +8,7 @@ module.exports = {
     ],
     '@babel/preset-react',
   ],
+  plugins: ['@babel/plugin-transform-runtime'],
   env: {
     test: {
       plugins: ['transform-es2015-modules-commonjs'],

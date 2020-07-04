@@ -3,6 +3,7 @@
     "@babel/core",
     "@babel/preset-env",
     "@babel/preset-react",
+    "@babel/plugin-transform-runtime",
     "babel-loader",
     "webpack",
     "webpack-cli",
